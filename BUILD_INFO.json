@@ -1,0 +1,7 @@
+{
+  "version": "0.1.0",
+  "toolchain": "Xcode 27.1\nBuild version 27A9275",
+  "linkage": "static",
+  "captureCompiledIn": true,
+  "captureEnabledByDefault": false
+}

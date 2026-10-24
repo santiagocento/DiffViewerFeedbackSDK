@@ -1,0 +1,118 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 6.4 effective-5.10 (swiftlang-6.4.0.34.1 clang-2100.3.34.1)
+// swift-module-flags: -target x86_64-apple-macos14.0 -enable-objc-interop -enable-library-evolution -language-mode 5 -O -enable-experimental-feature DebugDescriptionMacro -enable-bare-slash-regex -module-name DiffViewerFeedbackCore
+// swift-module-flags-ignorable: -no-verify-emitted-module-interface -formal-cxx-interoperability-mode=off -interface-compiler-version 6.4
+import CloudKit
+import Foundation
+import Swift
+import _Concurrency
+import _StringProcessing
+import _SwiftConcurrencyShims
+public actor CloudKitFeedbackTransport : DiffViewerFeedbackCore::FeedbackTransport {
+  public static let recordType: Swift::String
+  public init(containerIdentifier: Swift::String)
+  public func upload(_ report: DiffViewerFeedbackCore::RuntimeFeedback) async throws
+  public func fetchReports() async throws -> [DiffViewerFeedbackCore::RuntimeFeedback]
+  @objc deinit
+  @_semantics("defaultActor") nonisolated final public var unownedExecutor: _Concurrency::UnownedSerialExecutor {
+    get
+  }
+}
+public actor FeedbackOutbox {
+  public init(directory: Foundation::URL, transport: any DiffViewerFeedbackCore::FeedbackTransport)
+  public func enqueue(_ report: DiffViewerFeedbackCore::RuntimeFeedback) throws
+  public func pendingReports() throws -> [DiffViewerFeedbackCore::RuntimeFeedback]
+  public func flush() async throws
+  @objc deinit
+  @_semantics("defaultActor") nonisolated final public var unownedExecutor: _Concurrency::UnownedSerialExecutor {
+    get
+  }
+}
+public struct FeedbackRuntimeContext : Swift::Codable, Swift::Equatable, Swift::Sendable {
+  public var rootViewType: Swift::String
+  public var visibleControllerType: Swift::String?
+  public var screenTitle: Swift::String?
+  public var controllerHierarchy: [Swift::String]
+  public var navigationTitles: [Swift::String]
+  public var accessibilityIdentifiers: [Swift::String]
+  public var visibleLabels: [Swift::String]
+  public init(rootViewType: Swift::String, visibleControllerType: Swift::String? = nil, screenTitle: Swift::String? = nil, controllerHierarchy: [Swift::String] = [], navigationTitles: [Swift::String] = [], accessibilityIdentifiers: [Swift::String] = [], visibleLabels: [Swift::String] = [])
+  public static func == (a: DiffViewerFeedbackCore::FeedbackRuntimeContext, b: DiffViewerFeedbackCore::FeedbackRuntimeContext) -> Swift::Bool
+  public func encode(to encoder: any Swift::Encoder) throws
+  public init(from decoder: any Swift::Decoder) throws
+}
+public struct FeedbackScreen : Swift::Codable, Swift::Equatable, Swift::Sendable {
+  public var id: Swift::String
+  public var name: Swift::String
+  public var fileID: Swift::String
+  public var line: Swift::Int
+  public var sourcePath: Swift::String?
+  public init(_ id: Swift::String, name: Swift::String, sourcePath: Swift::String? = nil, fileID: Swift::String = #fileID, line: Swift::Int = #line)
+  public static func == (a: DiffViewerFeedbackCore::FeedbackScreen, b: DiffViewerFeedbackCore::FeedbackScreen) -> Swift::Bool
+  public func encode(to encoder: any Swift::Encoder) throws
+  public init(from decoder: any Swift::Decoder) throws
+}
+public enum RuntimeFeedbackKind : Swift::String, Swift::Codable, Swift::CaseIterable, Swift::Sendable {
+  case bug, note
+  public init?(rawValue: Swift::String)
+  public typealias AllCases = [DiffViewerFeedbackCore::RuntimeFeedbackKind]
+  public typealias RawValue = Swift::String
+  nonisolated public static var allCases: [DiffViewerFeedbackCore::RuntimeFeedbackKind] {
+    get
+  }
+  public var rawValue: Swift::String {
+    get
+  }
+}
+public struct FeedbackBuild : Swift::Codable, Swift::Equatable, Swift::Sendable {
+  public var bundleIdentifier: Swift::String
+  public var version: Swift::String
+  public var number: Swift::String
+  public var revision: Swift::String?
+  public init(bundleIdentifier: Swift::String, version: Swift::String, number: Swift::String, revision: Swift::String? = nil)
+  public static func == (a: DiffViewerFeedbackCore::FeedbackBuild, b: DiffViewerFeedbackCore::FeedbackBuild) -> Swift::Bool
+  public func encode(to encoder: any Swift::Encoder) throws
+  public init(from decoder: any Swift::Decoder) throws
+}
+public struct RuntimeFeedback : Swift::Identifiable, Swift::Codable, Swift::Equatable, Swift::Sendable {
+  public static let maximumTextLength: Swift::Int
+  public var schemaVersion: Swift::Int
+  public var id: Foundation::UUID
+  public var projectID: Swift::String
+  public var appName: Swift::String
+  public var kind: DiffViewerFeedbackCore::RuntimeFeedbackKind
+  public var text: Swift::String
+  public var screen: DiffViewerFeedbackCore::FeedbackScreen?
+  public var build: DiffViewerFeedbackCore::FeedbackBuild
+  public var device: Swift::String
+  public var systemVersion: Swift::String
+  public var createdAt: Foundation::Date
+  public var runtimeContext: DiffViewerFeedbackCore::FeedbackRuntimeContext?
+  public var screenName: Swift::String {
+    get
+  }
+  public init(id: Foundation::UUID = UUID(), projectID: Swift::String, appName: Swift::String, kind: DiffViewerFeedbackCore::RuntimeFeedbackKind, text: Swift::String, screen: DiffViewerFeedbackCore::FeedbackScreen?, build: DiffViewerFeedbackCore::FeedbackBuild, device: Swift::String, systemVersion: Swift::String, createdAt: Foundation::Date = Date(), runtimeContext: DiffViewerFeedbackCore::FeedbackRuntimeContext? = nil)
+  public func validate() throws
+  public static func == (a: DiffViewerFeedbackCore::RuntimeFeedback, b: DiffViewerFeedbackCore::RuntimeFeedback) -> Swift::Bool
+  public typealias ID = Foundation::UUID
+  public func encode(to encoder: any Swift::Encoder) throws
+  public init(from decoder: any Swift::Decoder) throws
+}
+public enum FeedbackError : Foundation::LocalizedError, Swift::Equatable, Swift::Sendable {
+  case invalidReport, invalidSourcePath, conflictingReport, invalidCloudRecord
+  case unsupportedVersion(Swift::Int)
+  public var errorDescription: Swift::String? {
+    get
+  }
+  public static func == (a: DiffViewerFeedbackCore::FeedbackError, b: DiffViewerFeedbackCore::FeedbackError) -> Swift::Bool
+}
+public protocol FeedbackTransport : Swift::Sendable {
+  func upload(_ report: DiffViewerFeedbackCore::RuntimeFeedback) async throws
+  func fetchReports() async throws -> [DiffViewerFeedbackCore::RuntimeFeedback]
+}
+public enum RuntimeFeedbackMarkdown {
+  public static func generate(reports: [DiffViewerFeedbackCore::RuntimeFeedback], agent: Swift::String = "", instructions: Swift::String = "") -> Swift::String
+}
+extension DiffViewerFeedbackCore::RuntimeFeedbackKind : Swift::Equatable {}
+extension DiffViewerFeedbackCore::RuntimeFeedbackKind : Swift::Hashable {}
+extension DiffViewerFeedbackCore::RuntimeFeedbackKind : Swift::RawRepresentable {}

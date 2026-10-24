@@ -1,0 +1,26 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 6.4 effective-5.10 (swiftlang-6.4.0.34.1 clang-2100.3.34.1)
+// swift-module-flags: -target arm64-apple-macos14.0 -enable-objc-interop -enable-library-evolution -language-mode 5 -O -enable-experimental-feature DebugDescriptionMacro -enable-bare-slash-regex -module-name DiffViewerFeedback
+// swift-module-flags-ignorable: -no-verify-emitted-module-interface -formal-cxx-interoperability-mode=off -interface-compiler-version 6.4
+import DiffViewerFeedbackCore
+import Foundation
+import Swift
+import SwiftUI
+import _Concurrency
+import _StringProcessing
+import _SwiftConcurrencyShims
+@_Concurrency::MainActor public struct DiffViewerFeedbackHost<Content> : SwiftUICore::View where Content : SwiftUICore::View {
+  @_Concurrency::MainActor public init(configuration: DiffViewerFeedback::FeedbackConfiguration, isEnabled: Swift::Bool = false, @SwiftUICore::ViewBuilder content: () -> Content)
+  @_Concurrency::MainActor @preconcurrency public var body: some SwiftUICore::View {
+    get
+  }
+  public typealias Body = @_opaqueReturnTypeOf("$s18DiffViewerFeedback0abC4HostV4bodyQrvp", 0) __<Content>
+}
+public struct FeedbackConfiguration : Swift::Sendable {
+  public var projectID: Swift::String
+  public var containerIdentifier: Swift::String
+  public var revision: Swift::String?
+  public var showsTriggerButton: Swift::Bool
+  public init(projectID: Swift::String, containerIdentifier: Swift::String, revision: Swift::String? = nil, showsTriggerButton: Swift::Bool = true)
+}
+extension DiffViewerFeedback::DiffViewerFeedbackHost : Swift::Sendable {}
