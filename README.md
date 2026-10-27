@@ -2,7 +2,9 @@
 
 Binary SwiftUI feedback SDK for development apps on iOS 17+. Shake the iPhone or tap **Feedback** to write a bug or note. The SDK captures the available interface context automatically and queues reports locally before uploading to private CloudKit storage. DiffViewer turns selected reports into agent-request Markdown.
 
-This package contains compiled static XCFrameworks and public API interfaces. It does not contain implementation sources. Add `https://github.com/santiagocento/DiffViewerFeedbackSDK.git` in Xcode, select version `0.1.0` or later, and link the `DiffViewerFeedback` product; both required binary modules are included.
+This package contains compiled static XCFrameworks and public API interfaces. It does not contain implementation sources. Add `https://github.com/santiagocento/DiffViewerFeedbackSDK.git` in Xcode, select version `0.1.1` or later, and link the `DiffViewerFeedback` product; both required binary modules are included.
+
+Version `0.1.1` fixes shake detection by listening on the app's window while preserving keyboard focus. The app-root integration below remains the same.
 
 Integrate once at the app root:
 
